@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>给你们的特别献礼</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: #000;
+            color: #ff0000;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            cursor: pointer;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .message {
+            font-size: 24px;
+            margin: 20px 0;
+            animation: blink 1s infinite;
+        }
+
+        .image-container {
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+            animation: pulse 2s infinite;
+        }
+
+        .image-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                rgba(255, 0, 0, 0.2), 
+                rgba(255, 0, 0, 0.1), 
+                rgba(255, 0, 0, 0.2));
+            z-index: 1;
+            pointer-events: none;
+            animation: gradientMove 3s infinite linear;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            transform: rotate(5deg);
+            transition: all 0.8s ease;
+            filter: grayscale(100%) contrast(120%) sepia(30%);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            animation: distort 5s infinite alternate;
+        }
+
+        .image-container img:hover {
+            transform: rotate(-5deg) scale(1.1);
+            filter: grayscale(100%) contrast(150%) brightness(90%) hue-rotate(90deg);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        @keyframes rotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes distort {
+            0% { transform: rotate(5deg) skew(0deg); }
+            25% { transform: rotate(3deg) skew(2deg); }
+            75% { transform: rotate(7deg) skew(-2deg); }
+            100% { transform: rotate(5deg) skew(0deg); }
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        #startButton {
+            padding: 20px 40px;
+            font-size: 24px;
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin: 20px 0;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .message {
+                font-size: 18px;
+            }
+
+            .image-container img {
+                transform: rotate(3deg);
+            }
+
+            .image-container img:hover {
+                transform: rotate(-3deg) scale(1.05);
+            }
+
+            #startButton {
+                padding: 15px 30px;
+                font-size: 20px;
+            }
+        }
+
+        .video-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 200px;
+            height: 200px;
+            z-index: 100;
+            transform: rotate(10deg);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-container.original-ratio {
+            width: 180px;
+            height: 320px;
+            background: none;
+            left: 20px;
+            bottom: 20px;
+        }
+
+        .video-container.original-ratio video {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 移动端适配视频容器 */
+        @media (max-width: 768px) {
+            .video-container.original-ratio {
+                width: 135px;
+                height: 240px;
+                bottom: 10px;
+                left: 10px;
+            }
+        }
+
+        /* 添加闪电背景效果 */
+        .lightning {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            animation: lightning 5s infinite;
+            opacity: 0;
+            background: white;
+        }
+
+        @keyframes lightning {
+            0% { opacity: 0; }
+            1% { opacity: 0.8; }
+            2% { opacity: 0; }
+            3% { opacity: 0.8; }
+            4% { opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        /* 添加文字抖动效果 */
+        .message p {
+            animation: shake 0.5s infinite;
+            text-shadow: 0 0 10px #ff0000;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* 添加血迹效果 */
+        .blood-drop {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #ff0000;
+            border-radius: 50%;
+            filter: blur(1px);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* 添加标题特效 */
+        h1 {
+            animation: glow 2s ease-in-out infinite alternate;
+            letter-spacing: 5px;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000;
+            }
+            to {
+                text-shadow: 0 0 20px #ff0000, 0 0 30px #ff0000, 0 0 40px #ff0000;
+            }
+        }
+
+        /* 视频容器的基础样式 */
+        .video-container {
+            position: fixed;
+            width: 180px;
+            height: 180px;
+            z-index: 100;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .video-container.right-video {
+            right: 20px;
+            bottom: 20px;
+            transform: rotate(10deg);
+        }
+
+        .video-container.left-video {
+            width: 180px;
+            height: 320px;
+            left: 20px;
+            bottom: 20px;
+            transform: rotate(-10deg);
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px 5px;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 24px;
+                margin: 10px 0;
+            }
+
+            .message {
+                font-size: 16px;
+                margin: 15px 0;
+            }
+
+            .message p {
+                margin: 8px 0;
+            }
+
+            /* 调整"不得好死"的文字大小 */
+            .message p[style*="font-size: 28px"] {
+                font-size: 22px !important;
+            }
+
+            .image-container {
+                margin: 15px 0;
+            }
+
+            .image-container img {
+                max-width: 90%;
+            }
+
+            /* 移动端视频布局 */
+            .video-container.right-video {
+                width: 120px;
+                height: 120px;
+                right: 10px;
+                bottom: 10px;
+            }
+
+            .video-container.left-video {
+                width: 120px;
+                height: 213px; /* 保持9:16比例 */
+                left: 10px;
+                bottom: 10px;
+            }
+
+            #startButton {
+                padding: 12px 24px;
+                font-size: 18px;
+                margin: 15px 0;
+            }
+
+            /* 减少血滴效果的数量 */
+            .blood-drop {
+                width: 8px;
+                height: 8px;
+            }
+        }
+
+        /* 横屏模式特别处理 */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .video-container.right-video {
+                width: 100px;
+                height: 100px;
+            }
+
+            .video-container.left-video {
+                width: 100px;
+                height: 178px;
+            }
+
+            .message {
+                font-size: 14px;
+            }
+
+            .message p[style*="font-size: 28px"] {
+                font-size: 18px !important;
+            }
+        }
+    </style>
+</head>
+<body onclick="playMedia()">
+    <div class="lightning"></div>
+    <div class="container">
+        <h1>💢 特别献礼 💢</h1>
+        <button id="startButton">点击开始体验</button>
+        
+        <div class="message">
+            <p>背后说人坏话的人，迟早会遭到报应！</p>
+            <p>做人要光明磊落，不要在背后搞小动作！</p>
+            <p style="color: #ff0000; font-size: 28px; font-weight: bold; text-shadow: 0 0 15px #ff0000;">
+                不得好死！不得好死！不得好死！
+            </p>
+            <p style="font-style: italic;">
+                暗地里搞小动作的人，终将付出代价！
+            </p>
+            <p style="letter-spacing: 5px;">
+                你的所作所为，老天爷都看在眼里！
+            </p>
+        </div>
+
+        <div class="image-container">
+            <img src="imgs.jpg" alt="照片" />
+        </div>
+
+        <div class="video-container right-video">
+            <video id="hyVideo" loop>
+                <source src="hy1.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <div class="video-container left-video">
+            <video id="hyVideo2" loop>
+                <source src="hy2.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <audio id="bgMusic" loop>
+            <source src="background.mp3" type="audio/mp3">
+        </audio>
+        <audio id="blyMusic" loop>
+            <source src="bly.mp3" type="audio/mp3">
+        </audio>
+        <audio id="dzb" loop>
+            <source src="dazuiba.mp3" type="audio/mp3">
+        </audio>
+    </div>
+
+    <script>
+        let audio = document.getElementById('bgMusic');
+        let blyAudio = document.getElementById('blyMusic');
+        let dzbAudio = document.getElementById('dzb');
+        let hyVideo = document.getElementById('hyVideo');
+        let hyVideo2 = document.getElementById('hyVideo2');
+        let hasInteracted = false;
+
+        function playMedia() {
+            if (!hasInteracted) {
+                audio.play();
+                blyAudio.play();
+                dzbAudio.play();
+                hyVideo.play();
+                hyVideo2.play();
+                hasInteracted = true;
+                document.getElementById('startButton').style.display = 'none';
+            }
+        }
+
+        // 防止音频自动播放被浏览器阻止
+        document.addEventListener('DOMContentLoaded', function() {
+            audio.volume = 0.5;
+            blyAudio.volume = 0.2;
+            dzbAudio.volume = 0.3; // 设置大嘴巴音量为30%
+            hyVideo.volume = 0.4;
+            hyVideo2.volume = 0.4;
+            hyVideo.muted = false;
+            hyVideo2.muted = false;
+        });
+
+        // 添加血迹效果
+        function createBloodDrop() {
+            const drop = document.createElement('div');
+            drop.className = 'blood-drop';
+            drop.style.left = Math.random() * window.innerWidth + 'px';
+            drop.style.top = '-10px';
+            document.body.appendChild(drop);
+
+            let posY = -10;
+            let opacity = 1;
+
+            function animate() {
+                posY += 2;
+                opacity -= 0.005;
+                drop.style.top = posY + 'px';
+                drop.style.opacity = opacity;
+
+                if (posY < window.innerHeight && opacity > 0) {
+                    requestAnimationFrame(animate);
+                } else {
+                    drop.remove();
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        // 定期创建血迹
+        setInterval(createBloodDrop, 200);
+
+        // 添加音效触发闪电效果
+        audio.addEventListener('play', function() {
+            document.querySelector('.lightning').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
